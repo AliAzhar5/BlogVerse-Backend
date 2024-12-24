@@ -1,0 +1,32 @@
+# Virtual environment
+venv/
+
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+
+# VS Code settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# Windows specific files
+Thumbs.db
+
+# Log files
+*.log
+*.tmp
+
+# Environment configuration
+.env
+
+# Node.js dependencies (for React)
+node_modules/
+
+# Django migrations folder (optional)
+migrations/
+
+# Static files directory (if you use collectstatic)
+static/
