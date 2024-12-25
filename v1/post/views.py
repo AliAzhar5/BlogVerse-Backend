@@ -22,7 +22,6 @@ class UserProfileView(APIView):
 
 class ProfileImageView(APIView):
     permission_classes = [IsAuthenticated]
-
     def get(self, request):
         try:
             profile = Profile.objects.get(user=request.user)
@@ -39,7 +38,6 @@ class ProfileImageView(APIView):
             profile.save()
             serializer = ImageProfileSerializer(profile)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        
         return Response({"detail": "No image file provided"}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
@@ -51,8 +49,6 @@ class ProfileImageView(APIView):
         profile.profile_image.delete()
         profile.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
 
 class CreateView(CreateAPIView):
 	serializer_class = CreateSerializer
@@ -114,7 +110,6 @@ class LikeView(APIView):
         like_obj, created = Likes.objects.get_or_create(user=request.user, post=post)
         like_obj.is_liked = not like_obj.is_liked
         like_obj.save()
-
         if like_obj.is_liked:
             post.likes += 1
         else:
@@ -132,21 +127,16 @@ class SearchView(APIView):
     def get(self, request, *args, **kwargs):
         query = request.GET.get('query', None)
         filter_by = request.GET.get('filter_by', 'title')
-
         if not query:
             return Response({"detail": "Please provide a search query."}, status=status.HTTP_400_BAD_REQUEST)
-
         if filter_by not in ['title', 'name']:
             return Response({"detail": "Invalid filter option."}, status=status.HTTP_400_BAD_REQUEST)
-
+        
         if filter_by == 'title':
-            # Search posts by title
             posts = Post.objects.filter(title__icontains=query)
             serializer = ListSerializer(posts, many=True, context={'request': request})
             return Response(serializer.data, status=status.HTTP_200_OK)
-
         elif filter_by == 'name':
-            # Search users by name
             users = User.objects.filter(
                 Q(first_name__icontains=query) |
                 Q(last_name__icontains=query) |

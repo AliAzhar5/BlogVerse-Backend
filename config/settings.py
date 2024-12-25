@@ -1,9 +1,11 @@
 import os
+import dj_database_url # type: ignore
 from datetime import timedelta
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'w=9z=a##*hd2w$@qn!%2r@k!v66+c4-2y)z&o&1+u-b8+2kbq@'
-DEBUG = True
-ALLOWED_HOSTS = ['f9ee65d3.ngrok.io','localhost','127.0.0.1']
+DEBUG = False
+ALLOWED_HOSTS = ['.vercel.app','localhost','127.0.0.1', '.now.sh']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -90,10 +92,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'XGehZWYjMfFHDOpcscZPeiABkGzaoTXS',
+        'HOST': 'autorack.proxy.rlwy.net',
+        'PORT': '36273',
     }
 }
+
+DATABASES = {
+    'default': dj_database_url.config(default='postgres://postgres:XGehZWYjMfFHDOpcscZPeiABkGzaoTXS@autorack.proxy.rlwy.net:36273/railway')
+}
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -120,13 +131,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+
 
 CORS_ALLOW_ALL_ORIGINS = True
 
